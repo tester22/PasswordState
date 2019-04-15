@@ -12,10 +12,16 @@ function Set-SAPPassword
 		[String]$NewPassword,
 		[String]$PrivilegedAccountUserName,
 		[String]$PrivilegedAccountPassword,
-        [String]$Client,
-        [String]$Instance,
-        [String]$SID
+        [String]$GenericField1,
+        [String]$GenericField2,
+        [String]$GenericField3
 	)
+
+    $Client = $GenericField1
+    $Instance = $GenericField2
+    $SID = $GenericField3
+
+
 	
 	try
 	{
@@ -66,16 +72,6 @@ function Set-SAPPassword
             Catch {
               $resultsarray = $_.Exception.Message
             }		
-		#Execute the command and put the output in an array.
-		$resultsarray = Invoke-Command -SessionOption $PSSessionOption -ComputerName $HostName -Authentication 'Default' -Credential $Credentials -ScriptBlock $scriptBlock -ArgumentList $HostName, $UserName, $NewPassword 2>&1 #Using 2>&1 to ensure STDERR is piped to STDOUT
-
-		#include Port Number in SPN if required
-		If ($resultsarray.ErrorDetails.Message -like "*Connecting to remote server $HostName failed with the following error message*0x80090322*" -or $resultsarray.ErrorDetails.Message -like "*Connecting to remote server $HostName failed with the following error message*The WS-Management service cannot complete the operation within the time specified in OperationTimeout*")
-		{
-			#Execute the command and put the output in an array.
-			$PSSessionOption = New-PSSessionOption -OperationTimeout [OperationTimeout] -OpenTimeOut [OpenTimeout] -IncludePortInSPN
-		    $resultsarray = Invoke-Command -SessionOption $PSSessionOption -ComputerName $HostName -Authentication 'Default' -Credential $Credentials -ScriptBlock $scriptBlock -ArgumentList $HostName, $UserName, $NewPassword 2>&1 #Using 2>&1 to ensure STDERR is piped to STDOUT
-		}
 		
 		if ($resultsarray -eq "Success")
 		{
@@ -111,4 +107,4 @@ function Set-SAPPassword
 }
 
 #Make a call to the Set-SAPPassword function
-Set-SAPPassword -HostName '[HostName]' -UserName '[UserName]' -OldPassword '[OldPassword]' -NewPassword '[NewPassword]' -PrivilegedAccountUserName '[PrivilegedAccountUserName]' -PrivilegedAccountPassword '[PrivilegedAccountPassword]' -Client '[GenericField1]' -Instance '[GenericField2]' -SID '[GenericField3]'
+Set-SAPPassword -HostName '[HostName]' -UserName '[UserName]' -OldPassword '[OldPassword]' -NewPassword '[NewPassword]' -PrivilegedAccountUserName '[PrivilegedAccountUserName]' -PrivilegedAccountPassword '[PrivilegedAccountPassword]' -GenericField1 '[GenericField1]' -GenericField2 '[GenericField2]' -GenericField3 '[GenericField3]'

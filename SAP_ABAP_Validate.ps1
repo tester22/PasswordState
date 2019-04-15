@@ -10,10 +10,14 @@ function Validate-SAPPassword
 		[String]$UserName,
 		[String]$CurrentPassword,
         [String]$PrivilegedAccountUserName,
-        [String]$Client,
-        [String]$Instance,
-        [String]$SID
+        [String]$GenericField1,
+        [String]$GenericField2,
+        [String]$GenericField3
        	)
+
+    $Client = $GenericField1
+    $Instance = $GenericField2
+    $SID = $GenericField3
 	
 	try
 	{
@@ -81,4 +85,6 @@ function Validate-SAPPassword
 
 
 #Make a call to the Validate-SAPPassword function
-Validate-SAPPassword -HostName '[HostName]' -UserName '[UserName]' -CurrentPassword '[CurrentPassword]' -Client '[GenericField1]' -Instance '[GenericField2]' -SID '[GenericField3]'
+#Validate-SAPPassword -HostName '[HostName]' -UserName '[UserName]' -CurrentPassword '[CurrentPassword]' -Client '[GenericField1]' -Instance '[GenericField2]' -SID '[GenericField3]'
+
+Validate-SAPPassword -HostName '[HostName]' -UserName '[UserName]' -CurrentPassword '[CurrentPassword]' -GenericField1 '[GenericField1]' -GenericField2 '[GenericField2]' -GenericField3 '[GenericField3]'
